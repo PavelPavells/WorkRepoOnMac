@@ -1,120 +1,93 @@
-var express = require("express");
-var bodyParser = require("body-parser");
-var fs = require("fs");
+const express = require("express");
+const MongoClient = require("mongodb").MongoClient;
+const objectId = require("mongodb").ObjectID;
+   
+const app = express();
+const jsonParser = express.json();
  
-var app = express();
-var jsonParser = bodyParser.json();
+const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlParser: true });
+ 
+let dbClient;
  
 app.use(express.static(__dirname + "/public"));
-// получение списка данных
+ 
+mongoClient.connect(function(err, client){
+    if(err) return console.log(err);
+    dbClient = client;
+    app.locals.collection = client.db("usersdb").collection("users");
+    app.listen(3000, function(){
+        console.log("Сервер ожидает подключения...");
+    });
+});
+ 
 app.get("/api/users", function(req, res){
-      
-    var content = fs.readFileSync("users.json", "utf8");
-    var users = JSON.parse(content);
-    res.send(users);
+        
+    const collection = req.app.locals.collection;
+    collection.find({}).toArray(function(err, users){
+         
+        if(err) return console.log(err);
+        res.send(users)
+    });
+     
 });
-// получение одного пользователя по id
 app.get("/api/users/:id", function(req, res){
-      
-    var id = req.params.id; // получаем id
-    var content = fs.readFileSync("users.json", "utf8");
-    var users = JSON.parse(content);
-    var user = null;
-    // находим в массиве пользователя по id
-    for(var i=0; i<users.length; i++){
-        if(users[i].id==id){
-            user = users[i];
-            break;
-        }
-    }
-    // отправляем пользователя
-    if(user){
+        
+    const id = new objectId(req.params.id);
+    const collection = req.app.locals.collection;
+    collection.findOne({_id: id}, function(err, user){
+               
+        if(err) return console.log(err);
         res.send(user);
-    }
-    else{
-        res.status(404).send();
-    }
+    });
 });
-// получение отправленных данных
+   
 app.post("/api/users", jsonParser, function (req, res) {
-     
+       
     if(!req.body) return res.sendStatus(400);
-     
-    var userName = req.body.name;
-    var userAge = req.body.age;
-    var user = {name: userName, age: userAge};
-     
-    var data = fs.readFileSync("users.json", "utf8");
-    var users = JSON.parse(data);
-     
-    // находим максимальный id
-    var id = Math.max.apply(Math,users.map(function(o){return o.id;}))
-    // увеличиваем его на единицу
-    user.id = id+1;
-    // добавляем пользователя в массив
-    users.push(user);
-    var data = JSON.stringify(users);
-    // перезаписываем файл с новыми данными
-    fs.writeFileSync("users.json", data);
-    res.send(user);
+       
+    const userName = req.body.name;
+    const userAge = req.body.age;
+    const user = {name: userName, age: userAge};
+       
+    const collection = req.app.locals.collection;
+    collection.insertOne(user, function(err, result){
+               
+        if(err) return console.log(err);
+        res.send(user);
+    });
 });
- // удаление пользователя по id
+    
 app.delete("/api/users/:id", function(req, res){
-      
-    var id = req.params.id;
-    var data = fs.readFileSync("users.json", "utf8");
-    var users = JSON.parse(data);
-    var index = -1;
-    // находим индекс пользователя в массиве
-    for(var i=0; i<users.length; i++){
-        if(users[i].id==id){
-            index=i;
-            break;
-        }
-    }
-    if(index > -1){
-        // удаляем пользователя из массива по индексу
-        var user = users.splice(index, 1)[0];
-        var data = JSON.stringify(users);
-        fs.writeFileSync("users.json", data);
-        // отправляем удаленного пользователя
+        
+    const id = new objectId(req.params.id);
+    const collection = req.app.locals.collection;
+    collection.findOneAndDelete({_id: id}, function(err, result){
+               
+        if(err) return console.log(err);    
+        let user = result.value;
         res.send(user);
-    }
-    else{
-        res.status(404).send();
-    }
+    });
 });
-// изменение пользователя
+   
 app.put("/api/users", jsonParser, function(req, res){
-      
+        
     if(!req.body) return res.sendStatus(400);
-     
-    var userId = req.body.id;
-    var userName = req.body.name;
-    var userAge = req.body.age;
-     
-    var data = fs.readFileSync("users.json", "utf8");
-    var users = JSON.parse(data);
-    var user;
-    for(var i=0; i<users.length; i++){
-        if(users[i].id==userId){
-            user = users[i];
-            break;
-        }
-    }
-    // изменяем данные у пользователя
-    if(user){
-        user.age = userAge;
-        user.name = userName;
-        var data = JSON.stringify(users);
-        fs.writeFileSync("users.json", data);
+    const id = new objectId(req.body.id);
+    const userName = req.body.name;
+    const userAge = req.body.age;
+       
+    const collection = req.app.locals.collection;
+    collection.findOneAndUpdate({_id: id}, { $set: {age: userAge, name: userName}},
+         {returnOriginal: false },function(err, result){
+               
+        if(err) return console.log(err);     
+        const user = result.value;
         res.send(user);
-    }
-    else{
-        res.status(404).send(user);
-    }
+    });
 });
-  
-app.listen(3000, function(){
-    console.log("Сервер ожидает подключения...");
+ 
+// прослушиваем прерывание работы программы (ctrl-c)
+process.on("SIGINT", () => {
+    dbClient.close();
+    process.exit();
 });
