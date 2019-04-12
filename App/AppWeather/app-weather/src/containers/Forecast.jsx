@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Paragraph, Input, Form} from "../styles";
 import weatherImage from "../constants/weatherImage";
-import { fethcData } from '../actions/weatherStation';
+import { fetchData } from '../actions/weatherStation';
 
 let input;
 class Forecast extends Component {
