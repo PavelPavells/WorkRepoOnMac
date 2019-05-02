@@ -415,3 +415,71 @@ alert( vasya.lastName ); // Попкин
 vasya.lastName = 'Сидоров';
 
 alert( vasya.fullName ); // Василий Сидоров
+
+
+let palindrome = str => {
+    let str = str.toLowerCase();
+    return str === str.split('').reverse().join('');
+}
+palindrome("racecar") //true, this is palindrome
+
+let fizzBuzz = num => {
+    for(let i = 1; i <= num; i++) {
+        if(i % 3 === 0 && i % 5 === 0) {
+            console.log("fizzBuzz");
+        } else if(i % 3 === 0) {
+            console.log("Fizz");
+        } else if(i % 5 === 0) {
+            console.log("Buzz");
+        } else {
+            console.log(i);
+        }
+    }
+}
+fizzBuzz(5);
+
+const buildCharObject = str => {
+    const charObj = {};
+    for(let char of str.replace(/[^\w]/g).toLowerCase()) {
+        charObj[char] = charObj[char] + 1 || 1;
+    }
+    return charObj;
+}
+const anagram = (strA, strB) => {
+    const aCharObject = buildCharObject(strA);
+    const bCharObject = buildCharObject(strB);
+    if(Object.keys(aCharObject).length !== Object.keys(bCharObject).length) {
+        return false;
+    }
+    for(let char in aCharObject) {
+        if(aCharObject[char] !== bCharObject[char]) {
+            return false;
+        }
+    }
+    return true
+}
+const findVowels = str => {
+    const count = 0;
+    const vowels = ['a', 'e', 'i', 'o', 'u'];
+    for(let char of str.length) {
+        if(vowels.includes(char)) {
+            count++;
+        }
+    }
+    return count;
+}
+const fibbonachi = num => {
+    const result = [0, 1];
+    for(let i = 2; i <= num; i++) {
+        const prevNumOne = result[i - 1];
+        const prevNumTwo = result[i - 2];
+        result.push(prevNumOne + prevNumTwo);
+    }
+    return result[num];
+}
+const fibbonachi = num => {
+    if(num < 2) {
+        return num;
+    }
+    return fibbonachi(num - 1) + fibbonachi(num - 2);
+}
