@@ -483,3 +483,83 @@ const fibbonachi = num => {
     }
     return fibbonachi(num - 1) + fibbonachi(num - 2);
 }
+function makeArmy() {
+    var shooters = [];
+    for(var i = 0; i < 10; i++) {
+        var shooter = (function(x) {
+            alert(x);
+        })(i);
+        shooters.push(shooter);
+    }
+    return shooters;
+}
+var army = makeArmy();
+army[0]();
+army[5]();
+
+function CoffeeMachine(power) {
+    this.waterAmount = 0;
+    var timerId;
+    var WATER_HEAT_CAPACITY;
+    var self = this;
+    function getBoilTime() {
+        return self.waterAmount * WATER_HEAT_CAPACITY * 80 / power;
+    }
+    function onReady() {
+        console.log("Coffee is ready!");
+    }
+    this.run = function() {
+        timerId = setTimeout(onReady, getBoilTime);
+    }
+    this.stop = function() {
+        clearTimeout(timerId);
+    }
+}
+var coffeeMachine = new CoffeeMachine(50000);
+coffeeMachine.waterAmount = 200;
+
+coffeeMachine.run();
+coffeeMachine.stop();
+
+function debounce(func, wait, immediate) {
+    var timeout;
+    return function() {
+        var context = this;
+        var args = arguments;
+        var later = function() {
+            timeout = null;
+            if(!immediate) {
+                func.apply(context, args)
+            }
+        }
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if(callNow) func.apply(context, args);
+    }
+}
+function debounce(f, ms) {
+    let timer = null;
+    return function(...args) {
+        const onComplete = () => {
+            f.apply(this, args);
+            timer = null;
+        }
+        if(timer) {
+            clearTimeout(timer);
+        }
+        timer = setTimeout(onComplete, ms);
+    }
+}
+function f(x) { alert(x) }
+let f = debounce(f, 1000);
+
+f(1); // вызов отложен на 1000 мс
+f(2); // предыдущий отложенный вызов игнорируется, текущий (2) откладывается на 1000 мс
+
+// через 1 секунду появится alert(2)
+
+setTimeout( function() { f(3) }, 1100); // через 1100 мс отложим вызов еще на 1000 мс
+setTimeout( function() { f(4) }, 1200); // игнорируем вызов (3)
+
+// через 2200 мс от начала выполнения появится alert(4)
