@@ -563,3 +563,116 @@ setTimeout( function() { f(3) }, 1100); // через 1100 мс отложим �
 setTimeout( function() { f(4) }, 1200); // игнорируем вызов (3)
 
 // через 2200 мс от начала выполнения появится alert(4)
+
+// Algorithms SORT's
+
+// Bubble Sort
+function bubbleSort(A) {
+    var n = A.length;
+    for(var i = 0; i < n - 1; i++) {
+        for(var j = 0; j < n - 1 - i; j++) {
+            if(A[j + 1] < A[j]) {
+                var t = A[j + 1];
+                A[j + 1] = A[j];
+                A[j] = t;
+            }
+        }
+    }
+    return A;
+}
+
+//Selection Sort
+
+function selectionSort(A) {
+    var n = A.length;
+    for(var i = 0; i < n - 1; i++) {
+        var min = i;
+        for(var j = i + 1; j < n; j++) {
+            if(A[j] < A[min]) {
+                min = j;
+            }
+            var t = A[min];
+            A[min] = A[i];
+            A[i] = t;
+        }
+    }
+    return A;
+}
+
+//Insertion Sort
+
+function insertionSort(A) {
+    var n = A.length;
+    for(var i = 0; i < n; i++) {
+        var v = A[i];
+        var j = i - 1;
+        while(j >= 0 && A[j] > v) {
+            A[j + 1] = A[j];
+            j--;
+        }
+        A[j + 1] = v;
+    }
+    return A;
+}
+
+//Merge Sort
+
+function Merge(a,low,mid,high) {
+    var b = new Array(high + 1 - low), h, i, j = mid + 1, k, h = low, i = 0;
+    while(h <= mid && j <= high ) {
+        if (a[h] <= a[j]){ 
+            b[i] = a[h]; 
+            h++;
+        } else { 
+            b[ i ] = a[j]; 
+            j++; 
+        }
+       i++;
+     }
+    if(h > mid){ 
+        for (k = j; k <= high; k++) { 
+            b[ i ] = a[k];
+             i++; 
+            } 
+        } else { 
+            for(k = h; k <= mid; k++) {  
+                b[ i ]=a[k];
+                i++; 
+            } 
+        }    
+    for(k = 0; k <= high - low; k++) {
+        a[k + low] = b[k];
+    }
+    return a;
+}
+
+function MergeSort(A) {
+    function merge_sort(a, low, high) {
+         if (low < high) { 
+             var mid = Math.floor((low + high) / 2);
+                merge_sort(a, low, mid);
+                merge_sort(a, mid + 1, high);
+                Merge(a, low, mid, high);
+        }
+    }
+    var n = A.length;
+    merge_sort(A, 0, n - 1);
+    return A;
+}
+
+//Quick Sort
+
+function quickSort(A) {
+    if(A.length == 0) {
+        return [];
+    }
+    var a = [], b = [], p = A[0];
+    for(var i = 1; i < A.length; i++) {
+        if(A[i] < p) {
+            a[a.length] = A[i];
+        } else {
+            b[b.length] = A[i];
+        }
+    }
+    return quickSort(a).concat(p, quickSort(b));
+}
