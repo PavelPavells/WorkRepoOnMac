@@ -1,0 +1,22 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<h1>
+  Welcome to {{firstName}} {{lastName}}!
+</h1>
+<br>
+<hr>
+<br>
+{{displayFirstName()}}
+<label for="name"></label>
+  <input type="radio" id="name" [checked]="status">
+
+<button (click)="greetPerson()">CLICK</button>
+<input [(ngModel)]="firstName" type="text">
+<br>
+{{lastName}}
+<br>
+<ul>
+  <li *ngFor="let post of posts;">{{post.title}}</li>
+</ul>
+<br>
+<h1 [ngClass]="{isActive: status}">{{lastName}}</h1>
+  
