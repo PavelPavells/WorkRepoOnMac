@@ -483,6 +483,30 @@ const fibbonachi = num => {
     }
     return fibbonachi(num - 1) + fibbonachi(num - 2);
 }
+//Fib Loops
+
+const fib = n => {
+    let prev = 0, next = 1;
+    for(let i = 0; i < n; i++){
+      let temp = next;
+      next = prev + next;
+      prev = temp;
+    }
+    return prev;
+  }
+// Best decision for fibonacci
+
+const fib2 = n => {
+    if(n == 0){
+      return [0, 1];
+    }else{
+      const [prev, next] = fib2(n - 1);
+      return [next, prev + next];
+    }
+  }
+  
+const fib = n => fib2(n)[0];
+
 function makeArmy() {
     var shooters = [];
     for(var i = 0; i < 10; i++) {
