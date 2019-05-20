@@ -700,3 +700,15 @@ function quickSort(A) {
     }
     return quickSort(a).concat(p, quickSort(b));
 }
+
+//Middleware Redux-Thunk
+
+function createThunkMiddleware(argument) {
+    return ({dispatch, getState}) => next => action => {
+        if(typeof action === "function") {
+            return action(dispatch, getState, argument);
+        }
+        return next(action);
+    }
+}
+const thunk = createThunkMiddleware();
