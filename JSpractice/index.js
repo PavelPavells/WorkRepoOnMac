@@ -590,6 +590,25 @@ setTimeout( function() { f(4) }, 1200); // игнорируем вызов (3)
 
 // Algorithms SORT's
 
+// Simple Sort
+var a = [4, 3, 8, 1, 7, 2, 9, 5, 10, 6];
+var n = a.length;
+var ans = [];
+for(var i = 0; i < n; i++) {
+    var index = 0;
+    var minValue = a[0];
+    for(var j = 1; j < a.length; j++) {
+        if(a[j] < minValue) {
+            minValue = a[j];
+            index = j;
+        }
+    }
+    ans.push(minValue);
+    a.splice(index, 1);
+}
+for(var i = 0; i < n; i++) {
+    console.log(ans[i]);
+}
 // Bubble Sort
 function bubbleSort(A) {
     var n = A.length;
