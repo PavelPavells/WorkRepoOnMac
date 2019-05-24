@@ -13,7 +13,7 @@ export default function reducer(state = {data: null, status: null}, action) {
                 ...state,
                 status: "failed"
             }
-            console.error(`Could not fetch the data from webserver. ${action.payload}.`)
+            //console.error(`Could not fetch the data from webserver. ${action.payload}.`)
         default:
             return state;
     }

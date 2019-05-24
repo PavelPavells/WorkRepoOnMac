@@ -1,10 +1,10 @@
-import styled, {createGlobalStyle} from "style-components";
+import style, {createGlobalStyle} from "styled-components";
 export const GlobalStyle = createGlobalStyle `
     body {
         font-family: Arial, Helvetica, sans-serif;
     }
 `;
-export const Center = styled.div `
+export const Center = style.div `
     display: flex;
     justify-content: center;
     align-items: center;
@@ -24,11 +24,11 @@ export const Center = styled.div `
         height: 30vh;
     }
 `;
-export const Paragraph = styled.p `
+export const Paragraph = style.p `
     font-family: Arial, Helvetica, sans-serif;
     font-size: 5vmin;
 `;
-export const Form = styled.form `
+export const Form = style.form `
     background-color: white;
     border-radius: 5px;
     height: 4rem;
@@ -36,7 +36,7 @@ export const Form = styled.form `
     justify-content: center;
     align-items: center;
 `;
-export const Input = styled.input `
+export const Input = style.input `
     border: 0;
     outline: 0;
     background: transparent;
