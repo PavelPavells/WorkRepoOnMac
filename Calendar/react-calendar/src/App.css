@@ -67,6 +67,7 @@ header {
   text-align: center;
   font-size: 15px;
   color: white;
+  font-weight: 100;
   border: none;
   background-color: var(--main-color);
 }

@@ -26,7 +26,7 @@ class App extends React.Component {
         </header>
           <button onChange={this.handleChange} class='header-add-button'>Добавить</button>
           <button class='header-refresh-button'>Обновить</button>
-        <main>
+        <main> 
           <Calendar />
         </main>
       </div>
