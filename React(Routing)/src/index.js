@@ -1,10 +1,10 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import Nav from './components/nav.jsx';
-import Home from './components/home.jsx';
-import Products from './components/products.jsx';
-import NotFound from './component/notfound.jsx';
+import Nav from './components/nav.jsx.js';
+import Home from './components/home.jsx.js';
+import Products from './components/products.jsx.js';
+import NotFound from './component/notfound.jsx.js';
 
 ReactDOM.render(
     <Router>
